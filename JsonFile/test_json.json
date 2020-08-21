@@ -1,0 +1,22 @@
+{
+    "target": "STM32F7-Dis",
+    "ListTab": [
+        {
+            "TabName": "LivingRoom",
+            "Type":"LR",
+            "Device":"LR-LED-01,LR-LED-02,LR-TV-01"
+        }
+    ]
+    }
+    
+{
+    "target": "STM32F7-Dis",
+    "ListRoom": [{
+        "LivingRoom": "LR-LED-01,LR-LED-02,LR-TV-01",
+        "BathRoom": "BAR-LED-01,BAR-LED-02",
+        "BedRoom": "BER-LED-01,BER-LED-02,BER-TV-01"
+    }]
+    }
+
+{"target": "STM32F7-Dis","ListRoom": [{"LivingRoom": "LR-LED-01,LR-LED-02,LR-TV-01","BathRoom": "BAR-LED-01,BAR-LED-02","BedRoom": "BER-LED-01,BER-LED-02,BER-TV-01"}]}
+"{\"target\": \"STM32F7-Dis\",\"ListRoom\": [{\"LivingRoom\": \"LR-LED-01,LR-LED-02,LR-TV-01\",\"BathRoom\": \"BAR-LED-01,BAR-LED-02\",\"BedRoom\": \"BER-LED-01,BER-LED-02,BER-TV-01\"}]}"

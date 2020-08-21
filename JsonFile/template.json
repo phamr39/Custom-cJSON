@@ -1,0 +1,36 @@
+{
+    "target": "STM32F7-Dis",
+    "ListTab": [
+        {
+            "TabName": "LivingRoom",
+            "Type":"LR",
+            "Device":[
+                {"name":"LED 01","ID":"LRLED01","type":"LED"},
+                {"name":"LED 02","ID":"LRLED02","type":"LED"},
+                {"name":"TV 01","ID":"LRTV01","type":"TV"},
+                {"name":"Air Conditioner 01","ID":"LRAC01","type":"AC"},
+                {"name":"Curtain 01","ID":"LRCR01","type":"CR"}
+            ]
+        },
+        {
+            "TabName": "BedRoom",
+            "Type": "BER",
+            "Device":
+            [
+                {"name":"LED 01","ID":"BERLED01","type":"LED"},
+                {"name":"TV 01","ID":"BERTV01","type":"TV"},
+                {"name":"Air Conditioner 01","ID":"BERAC01","type":"AC"},
+                {"name":"Curtain 01","ID":"BERTV01","type":"CR"}
+            ]
+        },
+        {
+            "TabName": "BathRoom",
+            "Type": "BAR",
+            "Device":[
+                {"name":"LED 01","ID":"BARLED01","type":"LED"},
+                {"name":"TV 01","ID":"BARTV01","type":"TV"},
+                {"name":"Air Conditioner 01","ID":"BARAC01","type":"AC"}
+            ]
+        }
+    ]
+}
