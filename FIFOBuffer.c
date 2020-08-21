@@ -7,7 +7,7 @@
 #include <windows.h>
 // char *json_text = "{\"target\": \"STM32F7-Dis\",\"ListTab\": [{\"TabName\": \"LivingRoom\",\"Type\":\"LR\",\"Device\":[{\"name\":\"LED 01\",\"ID\":\"LR-LED-01\",\"type\":\"LED\"},{\"name\":\"LED 02\",\"ID\":\"LR-LED-02\",\"type\":\"LED\"},{\"name\":\"TV 01\",\"ID\":\"LR-TV-01\",\"type\":\"TV\"}]}]}";
 // char *json_text = "{\"target\": \"STM32F7-Dis\",\"ListTab\": [{\"TabName\": \"LivingRoom\",\"Type\":\"LR\",\"Device\":\"LR-LED-01,LR-LED-02,LR-TV-01\"}]}";
-char * json_text = "{\"target\": \"STM32F7-Dis\",\"ListRoom\": [{\"LivingRoom\": \"LR-LED-01,LR-LED-02,LR-TV-01\",\"BathRoom\": \"BAR-LED-01,BAR-LED-02\",\"BedRoom\": \"BER-LED-01,BER-LED-02,BER-TV-01\"}]}";
+char * _json_text = "{\"target\": \"STM32F7-Dis\",\"ListRoom\": [{\"LivingRoom\": \"LR-LED-01,LR-LED-02,LR-TV-01\",\"BathRoom\": \"BAR-LED-01,BAR-LED-02\",\"BedRoom\": \"BER-LED-01,BER-LED-02,BER-TV-01\"}]}";
 char * tst_txt = "{\"target\": \"STM32F7-Dis\",\"ListRoom\": [{\"Root1\": [{\"Root2\":[{\"LivingRoom\":\"LR-LED-01,LR-LED-02,LR-TV-01\"}]}]}]}";
 void FIFOBufferWrite(char pDataIn)
 {
@@ -116,6 +116,7 @@ char * H_JSON_FindByKey(char * JSONText,char ValueAddress[])
     cJSON *root = cJSON_Parse(JSONText);
     // Get specify key
     int str_index[strlen(ValueAddress)];
+    int bk_str_index[strlen(ValueAddress)];
     int j = 0;
     char * Value = "";
     // printf("\nstrlen(ValueAddress) = %d",strlen(ValueAddress));
@@ -125,6 +126,7 @@ char * H_JSON_FindByKey(char * JSONText,char ValueAddress[])
         if (ValueAddress[i] == '/')
         {
             str_index[j] = i;
+            // bk_str_index[j] = i;
             j++;
             // printf("\nj= %d",j);
         }
@@ -139,8 +141,8 @@ char * H_JSON_FindByKey(char * JSONText,char ValueAddress[])
         if (k == 0)
         {
             // Get string
-            char str_[strlen(ValueAddress)] = ValueAddress;
-            // memcpy(str_ + 0 ,ValueAddress,strlen(ValueAddress));
+            char str_[strlen(ValueAddress)];
+            memcpy(str_ + 0 ,ValueAddress,strlen(ValueAddress));
             printf("\nstr_ = %s",str_);
             int str_2 = 32;
             memset(str_ + str_index[0],str_2,strlen(ValueAddress));
@@ -150,9 +152,9 @@ char * H_JSON_FindByKey(char * JSONText,char ValueAddress[])
             printf("\nlen of str_ = %d",strlen(str_));
             root_tmp = cJSON_GetObjectItem(root,str_)->child;
         }
-        printf("\nstr_index[0] = %d",str_index[0]);
-        printf("\nstr_index[1] = %d",str_index[1]);
-        printf("\nstr_index[2] = %d",str_index[2]);
+        printf("\nstr_index[0] = %d",bk_str_index[0]);
+        printf("\nstr_index[1] = %d",bk_str_index[1]);
+        printf("\nstr_index[2] = %d",bk_str_index[2]);
         if (j > 0 && k > 0)
         {
             if (k == j)
@@ -215,14 +217,14 @@ void main()
     // char *stringg;
     // printf("Hello World \n");
     // printf("%s",json_text);
-    char * t_json;
-    SaveStringToFIFO(json_text);
-    t_json = GetDataFromFIFO();
+    // char * t_json;
+    // SaveStringToFIFO(json_text);
+    // t_json = GetDataFromFIFO();
     // JSONPreProcessing(t_json);
     char * test_value;
     char test_src[] = "ListRoom/Root1/Root2/LivingRoom";
     test_value = H_JSON_FindByKey(tst_txt,test_src);
     printf("\nTest Value = %s",test_value);
     free(test_value);
-    free(t_json);
+    // free(t_json);
 }
