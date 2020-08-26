@@ -9,6 +9,7 @@
 // char *json_text = "{\"target\": \"STM32F7-Dis\",\"ListTab\": [{\"TabName\": \"LivingRoom\",\"Type\":\"LR\",\"Device\":\"LR-LED-01,LR-LED-02,LR-TV-01\"}]}";
 char * _json_text = "{\"target\": \"STM32F7-Dis\",\"ListRoom\": [{\"LivingRoom\": \"LR-LED-01,LR-LED-02,LR-TV-01\",\"BathRoom\": \"BAR-LED-01,BAR-LED-02\",\"BedRoom\": \"BER-LED-01,BER-LED-02,BER-TV-01\"}]}";
 char * tst_txt = "{\"target\": \"STM32F7-Dis\",\"ListRoom\": [{\"Root1\": [{\"Root2\":[{\"LivingRoom\":\"LR-LED-01,LR-LED-02,LR-TV-01\"}]}]}]}";
+char * test2class = "{\"target\": \"STM32F7-Dis\",\"ListRoom\": [{\"LivingRoom\":150}]}";
 void FIFOBufferWrite(char pDataIn)
 {
     if(pBufferWrite == pBufferRead)
@@ -109,6 +110,27 @@ void JSONPreProcessing(char *json_text)
     printf("\nBathRoom = %s",BathRoom);
     printf("\nBedRoom = %s",BedRoom);
 }
+char * JSONGetStringValue(char *json_text, char *root1, char *root2)
+{
+    printf("\njson_text = %s\n", json_text);
+    cJSON *root = cJSON_Parse(json_text);
+    char *output = malloc(strlen(json_text) - strlen(root1) + 1);
+    if (root2 == "")
+    {
+        // char *output = malloc(strlen(json_text) - strlen(root1) + 1);
+        char *item = cJSON_GetObjectItem(root,root1)->valuestring;
+        strcpy(output,item);
+    }
+    else
+    {
+        // char *output = malloc(strlen(json_text) - strlen(root1) - strlen(root2) + 1);
+        cJSON *item1 = cJSON_GetObjectItem(root,root1)->child;
+        char * item2 = cJSON_GetObjectItem(item1,root2)->valuestring;
+        strcpy(output,item2);
+    } 
+    printf("\nitem value = %s", output);
+    return output;
+}
 char * H_JSON_FindByKey(char * JSONText,char ValueAddress[])
 {
     printf("\nInput JSON: %s", JSONText);
@@ -151,6 +173,7 @@ char * H_JSON_FindByKey(char * JSONText,char ValueAddress[])
             printf("\nRoot 0 %s",str_);
             printf("\nlen of str_ = %d",strlen(str_));
             root_tmp = cJSON_GetObjectItem(root,str_)->child;
+            printf("\nk = 0");
         }
         printf("\nstr_index[0] = %d",bk_str_index[0]);
         printf("\nstr_index[1] = %d",bk_str_index[1]);
@@ -171,6 +194,7 @@ char * H_JSON_FindByKey(char * JSONText,char ValueAddress[])
                 char * root_final = cJSON_GetObjectItem(root_tmp,str_)->valuestring;
                 Value = root_final;
                 printf("\nValue = %s",Value);
+                printf("\n k = 1");
             }
             else
             {
@@ -212,19 +236,42 @@ void  RemoveChar(char a[], char c)
           }
       }
 }
-void main() 
+double JSONGetNumberValue(char *json_text, char *root1, char *root2)
 {
-    // char *stringg;
-    // printf("Hello World \n");
-    // printf("%s",json_text);
-    // char * t_json;
-    // SaveStringToFIFO(json_text);
-    // t_json = GetDataFromFIFO();
-    // JSONPreProcessing(t_json);
-    char * test_value;
-    char test_src[] = "ListRoom/Root1/Root2/LivingRoom";
-    test_value = H_JSON_FindByKey(tst_txt,test_src);
-    printf("\nTest Value = %s",test_value);
-    free(test_value);
-    // free(t_json);
+    printf("\njson_text = %s\n", json_text);
+    cJSON *root = cJSON_Parse(json_text);
+    double output;
+    if (root2 == "")
+    {
+        // char *output = malloc(strlen(json_text) - strlen(root1) + 1);
+        cJSON *item = cJSON_GetObjectItem(root,root1);
+        output = cJSON_GetNumberValue(item);
+    }
+    else
+    {
+        // char *output = malloc(strlen(json_text) - strlen(root1) - strlen(root2) + 1);
+        cJSON *item1 = cJSON_GetObjectItem(root,root1)->child;
+        cJSON * item2 = cJSON_GetObjectItem(item1,root2);
+        output = cJSON_GetNumberValue(item2);
+    } 
+    // printf("\nitem value = %f", output);
+    return output;
 }
+// void main() 
+// {
+//     // char *stringg;
+//     // printf("Hello World \n");
+//     // printf("%s",json_text);
+//     // char * t_json;
+//     // SaveStringToFIFO(json_text);
+//     // t_json = GetDataFromFIFO();
+//     JSONPreProcessing(_json_text);
+//     printf("\n------------------------------");
+//     // char test_src[] = "ListRoom/Root1/Root2/LivingRoom";
+//     char * result;
+//     result = JSONGetStringConfig(_json_text,"ListRoom","BathRoom");
+//     printf("\nResult = %s",result);
+//     free(result);
+//     double rr = JSONGetNumberValue(test2class,"ListRoom","LivingRoom");
+//     printf("\nThe output is %f",rr);
+// }
