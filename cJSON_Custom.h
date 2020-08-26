@@ -1,5 +1,5 @@
-#ifndef FIFO_BUFFER_H
-#define FIFO_BUFFER_H
+#ifndef CJSON_CUSTOM_H
+#define CJSON_CUSTOM_H
 #include "cJSON.h"
 #define ARRAY_SIZE 5000 //Size of buffer
 #define BUFFER_SIZE ARRAY_SIZE-1
